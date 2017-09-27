@@ -49,7 +49,7 @@ public class MultiThreadedTCPServer {
 
     public static void main(String args[]) {
         try {
-            ServerSocket socket = new ServerSocket(5678);
+            ServerSocket socket = new ServerSocket(80);
 
             System.out.println("Server listening to: " + socket.getInetAddress() + ":" + socket.getLocalPort());
 
