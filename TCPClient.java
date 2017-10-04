@@ -40,13 +40,12 @@ private static class TCPClient implements Runnable {
         }
 
 }
-    public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
     
     public static void main(String args[]) {
         try {
 
             String message, response;
-            Socket socket = new Socket("34.209.49.228", 80);
+            Socket socket = new Socket("52.35.11.11", 80);
 
             DataOutputStream output = new DataOutputStream(socket.getOutputStream());
             BufferedReader server = new BufferedReader(
@@ -61,7 +60,7 @@ private static class TCPClient implements Runnable {
 
             output.writeBytes(message);
             response = server.readLine();
-
+=
             System.out.println("[" + new Date() + "] Received: " + response);
 
             
