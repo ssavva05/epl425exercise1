@@ -7,62 +7,84 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.Random;
 
 public class MultiThreadedTCPServer {
 
-    private static class TCPWorker implements Runnable {
+	private static class TCPWorker implements Runnable {
 
-        private Socket client;
-        private String clientbuffer;
+		private Socket client;
+		private String clientbuffer;
 
-        public TCPWorker(Socket client) {
-            this.client = client;
-            this.clientbuffer = "";
-        }
+		public TCPWorker(Socket client) {
+			this.client = client;
+			this.clientbuffer = "";
+		}
 
-        @Override
-        public void run() {
+		@Override
+		public void run() {
 
-            try {
-                System.out.println("Client connected with: " + this.client.getInetAddress());
+			try {
+				System.out.println("Client connected with: " + this.client.getInetAddress());
 
-                DataOutputStream output = new DataOutputStream(client.getOutputStream());
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(this.client.getInputStream())
-                );
+				BufferedReader reader = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 
-                this.clientbuffer = reader.readLine();
-                System.out.println("[" + new Date() + "] Received: " + this.clientbuffer);
+				this.clientbuffer = reader.readLine();
+				System.out.println("[" + new Date() + "] Received: " + this.clientbuffer);
 
-                output.writeBytes(this.clientbuffer.toUpperCase() + System.lineSeparator());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+				// "HELLO "+ InetAdress.getLocalHost().getHostAdress() + " " +
+				// socket.getLocalPort() + )
+				String str = reader.toString();
+				String[] splited = str.split("\\s+");
 
-        }
+				String outputs = "";
 
-    }
+				if (splited[0].equals("HELLO")) {
 
-    public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
+					Random rand = new Random(System.currentTimeMillis());
+					// 2000 is the maximum and the 300 is our minimum
+					int n = rand.nextInt(2000) + 300;
+					outputs = "WELCOME " + splited[3] + " " + n + " ";
+				}
 
-    public static void main(String args[]) {
-        try {
-            ServerSocket listener = new ServerSocket(80);
+				else {
 
-            System.out.println("Server listening to: " + listener.getInetAddress() + ":" + listener.getLocalPort());
+					outputs = "UNAUTHORIZED USER";
+				}
+				DataOutputStream output = new DataOutputStream(client.getOutputStream());
+				// output.writeBytes(this.clientbuffer.toUpperCase() +
+				// System.lineSeparator());
+				output.writeBytes(outputs + System.lineSeparator());
 
-            while (true) {
-                Socket client = listener.accept();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-                TCP_WORKER_SERVICE.submit(
-                        new TCPWorker(client)
-                );
+		}
 
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	}
+
+	public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
+
+	public static void main(String args[]) {
+		try {
+			ServerSocket listener = new ServerSocket(Integer.parseInt(args[0]));
+
+			System.out.println("Server listening to: " + listener.getInetAddress() + ":" + listener.getLocalPort());
+
+			// while (true) {
+			int cntr = 0;
+			while (cntr < Integer.parseInt(args[1])) {
+				Socket client = listener.accept();
+
+				TCP_WORKER_SERVICE.submit(new TCPWorker(client));
+
+				listener.close();
+				cntr++;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
-
