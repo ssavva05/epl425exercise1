@@ -40,6 +40,7 @@ private static class TCPClient implements Runnable {
         }
 
 }
+    public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
     
     public static void main(String args[]) {
         try {
