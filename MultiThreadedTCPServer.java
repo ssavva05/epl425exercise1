@@ -47,12 +47,12 @@ public class MultiThreadedTCPServer {
 
     public static void main(String args[]) {
         try {
-            ServerSocket socket = new ServerSocket(80);
+            ServerSocket listener = new ServerSocket(80);
 
-            System.out.println("Server listening to: " + socket.getInetAddress() + ":" + socket.getLocalPort());
+            System.out.println("Server listening to: " + listener.getInetAddress() + ":" + listener.getLocalPort());
 
             while (true) {
-                Socket client = socket.accept();
+                Socket client = listener.accept();
 
                 TCP_WORKER_SERVICE.submit(
                         new TCPWorker(client)
