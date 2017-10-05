@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class TCPClient implements Runnable {
 
-    public static int counter;
+    public static int counter = 0;
 
    // private static Socket client;
     private static String IP;
@@ -60,7 +60,6 @@ public class TCPClient implements Runnable {
     	
         int cntr = 0;
 		while (cntr < 300) {
-		    //Socket newClient = listener.accept();
 		    TCPClient tcpClient = new TCPClient();
 		    //TCP_WORKER_SERVICE.submit((new TCPClient(newClient)).run());
 		    tcpClient.run();
@@ -69,14 +68,6 @@ public class TCPClient implements Runnable {
 
 
     }
-
-	/*public static Socket getClient() {
-		return client;
-	}
-
-	public static void setClient(Socket client) {
-		TCPClient.client = client;
-	}*/
 
 }
 
