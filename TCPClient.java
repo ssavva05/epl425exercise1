@@ -61,8 +61,8 @@ public class TCPClient implements Runnable {
         int cntr = 0;
 		while (cntr < 300) {
 		    TCPClient tcpClient = new TCPClient();
-		    //TCP_WORKER_SERVICE.submit((new TCPClient(newClient)).run());
-		    tcpClient.run();
+		    TCP_WORKER_SERVICE.submit(tcpClient);
+		    
 		    cntr ++;
 		}
 

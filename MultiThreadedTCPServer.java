@@ -32,14 +32,13 @@ public class MultiThreadedTCPServer {
 				this.clientbuffer = reader.readLine();
 				System.out.println("[" + new Date() + "] Received: " + this.clientbuffer);
 
-				// "HELLO "+ InetAdress.getLocalHost().getHostAdress() + " " +
 				// socket.getLocalPort() + )
 				String str = reader.toString();
-				String[] splited = str.split("\\s+");
+				String[] splited = str.split(" ");
 
 				String outputs = "";
 
-				if (splited[0].equals("HELLO")) {
+				if (splited[0].compareTo("HELLO") == 0) {
 
 					Random rand = new Random(System.currentTimeMillis());
 					// 2000 is the maximum and the 300 is our minimum
@@ -89,3 +88,4 @@ public class MultiThreadedTCPServer {
 	}
 
 }
+
