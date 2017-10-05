@@ -79,7 +79,7 @@ public class MultiThreadedTCPServer {
 
 				TCP_WORKER_SERVICE.submit(new TCPWorker(client));
 
-				listener.close();
+				//listener.close();
 				cntr++;
 			}
 		} catch (IOException e) {
