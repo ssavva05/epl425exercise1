@@ -1,12 +1,9 @@
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.BufferedInputStream;
 import java.net.Socket;
 import java.util.Date;
 import java.net.Inet4Address;
@@ -18,14 +15,11 @@ public class TCPClient implements Runnable {
 
     public static int counter;
 
-    private static Socket client;
-    private String clientbuffer;
+   // private static Socket client;
     private static String IP;
     private static String Port;
 
-        public TCPClient(Socket client) {
-            TCPClient.client = client;
-            this.clientbuffer = "";
+        public TCPClient() {
             counter++;
         }
 
@@ -60,31 +54,29 @@ public class TCPClient implements Runnable {
 
     public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
     
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException {
     	IP = args[0];
     	Port = args[1];
     	
-        try {
-        	ServerSocket listener = new ServerSocket(Integer.parseInt(Port));
-
-            int cntr = 0;
-            while (cntr < 300) {
-                Socket newClient = listener.accept();
-                TCP_WORKER_SERVICE.submit(new TCPClient(newClient));
-                cntr ++;
-                newClient.close();
-            }
-            
-            listener.close();
-
-            
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        int cntr = 0;
+		while (cntr < 300) {
+		    //Socket newClient = listener.accept();
+		    TCPClient tcpClient = new TCPClient();
+		    //TCP_WORKER_SERVICE.submit((new TCPClient(newClient)).run());
+		    tcpClient.run();
+		    cntr ++;
+		}
 
 
     }
+
+	/*public static Socket getClient() {
+		return client;
+	}
+
+	public static void setClient(Socket client) {
+		TCPClient.client = client;
+	}*/
 
 }
 
