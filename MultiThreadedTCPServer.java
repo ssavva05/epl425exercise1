@@ -32,7 +32,6 @@ public class MultiThreadedTCPServer {
 				this.clientbuffer = reader.readLine();
 				System.out.println("[" + new Date() + "] Received: " + this.clientbuffer);
 
-				// socket.getLocalPort() + )
 				String str = this.clientbuffer.toString();
 				String[] splited = str.split(" ");
 
@@ -51,11 +50,7 @@ public class MultiThreadedTCPServer {
 					outputs += "UNAUTHORIZED USER";
 				}
 				DataOutputStream output = new DataOutputStream(client.getOutputStream());
-				// output.writeBytes(this.clientbuffer.toUpperCase() +
-				// System.lineSeparator());
 				output.writeBytes(outputs + System.lineSeparator());
-				System.out.println("passes "+ outputs);
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

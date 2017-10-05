@@ -12,14 +12,13 @@ import java.util.concurrent.Executors;
 
 public class TCPClient implements Runnable {
 
-    public static int counter = 0;
-
    // private static Socket client;
     private static String IP;
     private static String Port;
+    private int counter;
 
-        public TCPClient() {
-            counter++;
+        public TCPClient(int count) {
+            this.counter = count;
         }
 
         @Override
@@ -33,7 +32,7 @@ public class TCPClient implements Runnable {
                         new InputStreamReader(socket.getInputStream())
                 );
 
-                String clientMessage = "HELLO "+ Inet4Address.getLocalHost().getHostAddress() + " " +  socket.getLocalPort() + " " +  counter + System.lineSeparator();
+                String clientMessage = "HELLO "+ Inet4Address.getLocalHost().getHostAddress() + " " +  socket.getLocalPort() + " " +  this.counter + System.lineSeparator();
                 Reader clientMessageReader = new StringReader(clientMessage);
                 BufferedReader messageFromClient = new BufferedReader(clientMessageReader);                
 
@@ -59,7 +58,7 @@ public class TCPClient implements Runnable {
     	
         int cntr = 0;
 		while (cntr < 300) {
-		    TCPClient tcpClient = new TCPClient();
+		    TCPClient tcpClient = new TCPClient(cntr);
 		    TCP_WORKER_SERVICE.submit(tcpClient);
 		    
 		    cntr ++;
