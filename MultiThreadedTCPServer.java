@@ -55,6 +55,7 @@ public class MultiThreadedTCPServer {
 				// output.writeBytes(this.clientbuffer.toUpperCase() +
 				// System.lineSeparator());
 				output.writeBytes(outputs + System.lineSeparator());
+				System.out.println("passes "+ outputs);
 
 			} catch (IOException e) {
 				e.printStackTrace();
