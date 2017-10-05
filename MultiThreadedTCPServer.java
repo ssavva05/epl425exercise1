@@ -38,9 +38,9 @@ public class MultiThreadedTCPServer {
 
 				String outputs = "";
 
-				outputs = splited[0];
+				outputs = splited[0].toString();
 				
-				if (splited[0].compareTo("HELLO") == 0) {
+				if (splited[0].toString().compareTo("HELLO") == 0) {
 
 					Random rand = new Random(System.currentTimeMillis());
 					// 2000 is the maximum and the 300 is our minimum

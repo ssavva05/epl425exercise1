@@ -7,7 +7,6 @@ import java.io.StringReader;
 import java.net.Socket;
 import java.util.Date;
 import java.net.Inet4Address;
-import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,7 +33,7 @@ public class TCPClient implements Runnable {
                         new InputStreamReader(socket.getInputStream())
                 );
 
-                String clientMessage = "HELLO "+ Inet4Address.getLocalHost().getHostAddress() + " " +  socket.getLocalPort() + counter + System.lineSeparator();
+                String clientMessage = "HELLO "+ Inet4Address.getLocalHost().getHostAddress() + " " +  socket.getLocalPort() + " " +  counter + System.lineSeparator();
                 Reader clientMessageReader = new StringReader(clientMessage);
                 BufferedReader messageFromClient = new BufferedReader(clientMessageReader);                
 
