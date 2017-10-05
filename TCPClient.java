@@ -1,20 +1,30 @@
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.BufferedInputStream;
 import java.net.Socket;
 import java.util.Date;
+import java.net.Inet4Address;
+import java.net.ServerSocket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class TCPClient {
+public class TCPClient implements Runnable {
 
     public static int counter;
-private static class TCPClient implements Runnable {
 
-        private Socket client;
-        private String clientbuffer;
+    private static Socket client;
+    private String clientbuffer;
+    private static String IP;
+    private static String Port;
 
         public TCPClient(Socket client) {
-            this.client = client;
+            TCPClient.client = client;
             this.clientbuffer = "";
             counter++;
         }
@@ -22,59 +32,52 @@ private static class TCPClient implements Runnable {
         @Override
         public void run() {
             try {
-                System.out.println("Client connected with: " + this.client.getInetAddress());
+                String message, response;
+                Socket socket = new Socket(IP, Integer.parseInt(Port));
 
-                DataOutputStream output = new DataOutputStream(client.getOutputStream());
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(this.client.getInputStream())
+                DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+                BufferedReader server = new BufferedReader(
+                        new InputStreamReader(socket.getInputStream())
                 );
 
-                this.clientbuffer = reader.readLine();
-                System.out.println("[" + new Date() + "] Received: " + this.clientbuffer);
+                String clientMessage = "HELLO "+ Inet4Address.getLocalHost().getHostAddress() + " " +  socket.getLocalPort() + counter + System.lineSeparator();
+                Reader clientMessageReader = new StringReader(clientMessage);
+                BufferedReader messageFromClient = new BufferedReader(clientMessageReader);                
 
-                output.writeBytes(this.clientbuffer.toUpperCase() + System.lineSeparator());
+                message = messageFromClient.readLine() + System.lineSeparator();
+
+                output.writeBytes(message);
+                response = server.readLine();
+
+                System.out.println("[" + new Date() + "] Received: " + response);
+                socket.close();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
 
-}
+
     public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
     
-    public static void main(String args[]) {
+	public static void main(String args[]) {
+    	IP = args[0];
+    	Port = args[1];
+    	
         try {
+        	ServerSocket listener = new ServerSocket(Integer.parseInt(Port));
 
-            String message, response;
-            Socket socket = new Socket("52.35.11.11", 80);
-
-            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-            BufferedReader server = new BufferedReader(
-                    new InputStreamReader("HELLO "+ InetAdress.getLocalHost().getHostAdress() + " " +  socket.getLocalPort() + )
-            );
-
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(System.in)
-            );
-            message = reader.readLine() + System.lineSeparator();
-
-
-            output.writeBytes(message);
-            response = server.readLine();
-
-            System.out.println("[" + new Date() + "] Received: " + response);
-
-            
-            while (true) {
-                Socket client = socket.accept();
-
-                TCP_WORKER_SERVICE.submit(
-                        new TCPClient(client)
-                );
-
+            int cntr = 0;
+            while (cntr < 300) {
+                Socket newClient = listener.accept();
+                TCP_WORKER_SERVICE.submit(new TCPClient(newClient));
+                cntr ++;
+                newClient.close();
             }
             
-            socket.close();
+            listener.close();
+
+            
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,3 +87,4 @@ private static class TCPClient implements Runnable {
     }
 
 }
+
