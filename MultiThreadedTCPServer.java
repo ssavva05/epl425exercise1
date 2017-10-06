@@ -82,9 +82,9 @@ public class MultiThreadedTCPServer {
 			long time =  time_stop - time_start;
 			//long seconds = TimeUnit.NANOSECONDS.toSeconds(time);
 			//long req = (long) (((cntr+1)*000000000.1)/time);
-			System.out.println(time + cntr );
-			double req = (double) (cntr/time);
-			System.out.println("The server satisfies "+ req+" per nanosecond");
+			System.out.println(time +" "+cntr );
+			//double req = ;
+			//System.out.println("The server satisfies "+ req+" per nanosecond");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
