@@ -119,7 +119,7 @@ public class MultiThreadedTCPServer {
 			double reqd = cntr/seconds;
 			int a = (int) Math.round(reqd);
 			//double reqd = (double) (req) / 1000000000.0;
-			System.out.println("The server can handle "+a+" per second. ");
+			System.out.println("The server can handle "+a+" requests per second. ");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
