@@ -1,2 +1,25 @@
-1) run server
-2) run client
+This is a multithreading client-server program. 
+This program is Licensed under the Apache License, Version 2.0  
+
+Instructions:
+0) Compile the project
+1) Run server
+ java MultiThreadedTCPServer 9999 1000  
+                              |    |->Number of repetitions
+                              |------>Port Number
+2) Run client
+ java TCPClient 192.168.1.10 9999
+                         |    |->Port Number
+                         |------>Server IP
+3) Extra parameters on Server file (MultiThreadedTCPServer.java) 
+    -> Can change the thread pool size by change the value on THREAD_POOL_SIZE 
+    This will change the ammount of request that will be executed simulataneusly.   
+4) Extra parameters on Client 
+    -> Can change the thread pool size by change the value on SIZE_OF_POOL
+    This will change the ammount of request that will be executed simulataneusly. 
+	  -> The number of clients NUMBER_OF_CLIENTS
+    This will change the ammount of users that will sent request to server.
+    This satisfy the requirement that said we need N users.
+	  -> The number of clients NUMBER_OF_REQUESTS_PER_CLIENTS
+    This will change the ammount of request that can sent one user to the server.
+    This satisfy the requirement that said at least 300 requests by each user.
