@@ -23,15 +23,17 @@ public class TCPClient implements Runnable {
 
         @Override
         public void run() {
-            try {
+		for (int i=0;i<100;i+=20) {
+		try { 		
+		Socket socket = new Socket(IP, Integer.parseInt(Port));
+		          
                 String message, response;
-                Socket socket = new Socket(IP, Integer.parseInt(Port));
 
                 DataOutputStream output = new DataOutputStream(socket.getOutputStream());
                 BufferedReader server = new BufferedReader(
                         new InputStreamReader(socket.getInputStream())
                 );
-
+		 
                 String clientMessage = "HELLO "+ Inet4Address.getLocalHost().getHostAddress() + " " +  socket.getLocalPort() + " " +  this.counter + System.lineSeparator();
                 Reader clientMessageReader = new StringReader(clientMessage);
                 BufferedReader messageFromClient = new BufferedReader(clientMessageReader);                
@@ -42,11 +44,17 @@ public class TCPClient implements Runnable {
                 response = server.readLine();
 
                 System.out.println("[" + new Date() + "] Received: " + response);
-                socket.close();
-
-            } catch (IOException e) {
+		try {
+                    Thread.sleep((int)(Math.random() * 1000));
+                } catch (InterruptedException e) {
+                	}
+		
+	socket.close();
+ 	
+	} catch (IOException e) {
                 e.printStackTrace();
-            }
+        }
+	}
         }
 
 
@@ -57,7 +65,7 @@ public class TCPClient implements Runnable {
     	Port = args[1];
     	
         int cntr = 0;
-		while (cntr < 300) {
+		while (cntr < 100) {
 		    TCPClient tcpClient = new TCPClient(cntr);
 		    TCP_WORKER_SERVICE.submit(tcpClient);
 		    
@@ -68,4 +76,3 @@ public class TCPClient implements Runnable {
     }
 
 }
-
