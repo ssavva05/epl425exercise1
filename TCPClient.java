@@ -11,11 +11,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TCPClient implements Runnable {
-
 	
 	private static final int SIZE_OF_POOL = 10;
-	private static final int NUMBER_OF_CLIENTS = 15;
-	private static final int NUMBER_OF_REQUESTS_PER_CLIENTS = 5;
+	private static final int NUMBER_OF_CLIENTS = 10;
+	private static final int NUMBER_OF_REQUESTS_PER_CLIENTS = 300;
+	
     	private static String IP;
     	private static String Port;
     	private int userid;
@@ -30,6 +30,7 @@ public class TCPClient implements Runnable {
 
         @Override
         public void run() {
+		// Each user will send a given number of request
         	for (int i=1;i<=NUMBER_OF_REQUESTS_PER_CLIENTS;i++) {
         			try { 		
         				Socket socket = new Socket(IP, Integer.parseInt(Port));
@@ -39,12 +40,15 @@ public class TCPClient implements Runnable {
         				DataOutputStream output = new DataOutputStream(socket.getOutputStream());
         				BufferedReader server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		 
+					// The user will send the message: "HELLO [IP adress] [port number] [userid]"
         				String clientMessage = "HELLO "+ Inet4Address.getLocalHost().getHostAddress() + " " +  socket.getLocalPort() + " " +  this.userid + System.lineSeparator();
         				Reader clientMessageReader = new StringReader(clientMessage);
         				BufferedReader messageFromClient = new BufferedReader(clientMessageReader);                
 
         				message = messageFromClient.readLine() + System.lineSeparator();
 
+					// In order to computer the RTT we check the time just before sending the request
+					// and just after receiving it
         				long beforeSendingTime = System.nanoTime();
         				output.writeBytes(message);
         				response = server.readLine();
@@ -57,6 +61,7 @@ public class TCPClient implements Runnable {
         				
         				if (i == NUMBER_OF_REQUESTS_PER_CLIENTS)
         				{
+						// When the user sent all its requests we compute the average RTT it took
         					averageTimeSpentPerClient = totalTimeSpentPerClient/NUMBER_OF_REQUESTS_PER_CLIENTS;
         					System.out.println("[Average time spent for client " + userid+ "] " + averageTimeSpentPerClient);
         				}
@@ -78,14 +83,15 @@ public class TCPClient implements Runnable {
         }
 
 
-    public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(SIZE_OF_POOL);
+	// The requests will be sent using a given number of threads (size of pool)
+    	public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(SIZE_OF_POOL);
     
 	public static void main(String args[]) throws IOException {
-    	IP = args[0];
-    	Port = args[1];
-    	long tmpTotalAverageTimeSpentPerClient = 0;
+    		IP = args[0];
+    		Port = args[1];
 
-        int userid = 1;
+        	int userid = 1;
+		// We simulate a given number of client which will share the threads of the pool to send their request
 		while (userid <= NUMBER_OF_CLIENTS) {
 		    TCPClient tcpClient = new TCPClient(userid);
 		    TCP_WORKER_SERVICE.submit(tcpClient);
