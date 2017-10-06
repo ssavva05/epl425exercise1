@@ -114,10 +114,10 @@ public class MultiThreadedTCPServer {
 			long time_stop = System.nanoTime();
 			listener.close();
 			long time = time_stop - time_start;
-			// long seconds = TimeUnit.NANOSECONDS.toSeconds(time);
-			// long req = (long) (((cntr+1)*000000000.1)/time);
-			double req = time / cntr;
-			double reqd = (double) (req) / 1000000000.0;
+			double seconds = (double) (time) / 1000000000.0;
+			
+			double reqd = cntr/seconds;
+			//double reqd = (double) (req) / 1000000000.0;
 			System.out.println(reqd);
 		} catch (IOException e) {
 			e.printStackTrace();
