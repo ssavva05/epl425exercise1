@@ -117,8 +117,9 @@ public class MultiThreadedTCPServer {
 			double seconds = (double) (time) / 1000000000.0;
 			
 			double reqd = cntr/seconds;
+			int a = (int) Math.round(reqd);
 			//double reqd = (double) (req) / 1000000000.0;
-			System.out.println(reqd);
+			System.out.println(a);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
