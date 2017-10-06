@@ -36,8 +36,6 @@ public class MultiThreadedTCPServer {
 				String[] splited = str.split(" ");
 
 				String outputs = "";
-
-				outputs = splited[0];
 				
 				if (splited[0].compareTo("HELLO") == 0) {
 
@@ -83,4 +81,4 @@ public class MultiThreadedTCPServer {
 	}
 
 }
-
+s
