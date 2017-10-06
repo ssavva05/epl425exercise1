@@ -72,9 +72,10 @@ public class MultiThreadedTCPServer {
 
 				TCP_WORKER_SERVICE.submit(new TCPWorker(client));
 
-				//listener.close();
+				//
 				cntr++;
 			}
+			listener.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
