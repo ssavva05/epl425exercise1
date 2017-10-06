@@ -12,10 +12,13 @@ import java.util.concurrent.Executors;
 
 public class TCPClient implements Runnable {
 
-   // private static Socket client;
-    private static String IP;
-    private static String Port;
-    private int counter;
+	
+	private static final int SIZE_OF_POOL = 10;
+	private static final int NUMBER_OF_CLIENTS = 100;
+	private static final int NUMBER_OF_REQUESTS_PER_CLIENTS = 5;
+    	private static String IP;
+    	private static String Port;
+    	private int counter;
 
         public TCPClient(int count) {
             this.counter = count;
@@ -23,7 +26,7 @@ public class TCPClient implements Runnable {
 
         @Override
         public void run() {
-		for (int i=0;i<100;i+=20) {
+		for (int i=0;i<NUMBER_OF_REQUESTS_PER_CLIENTS;i++) {
 		try { 		
 		Socket socket = new Socket(IP, Integer.parseInt(Port));
 		          
@@ -58,14 +61,14 @@ public class TCPClient implements Runnable {
         }
 
 
-    public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
+    public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(SIZE_OF_POOL);
     
 	public static void main(String args[]) throws IOException {
     	IP = args[0];
     	Port = args[1];
     	
         int cntr = 0;
-		while (cntr < 100) {
+		while (cntr < NUMBER_OF_CLIENTS) {
 		    TCPClient tcpClient = new TCPClient(cntr);
 		    TCP_WORKER_SERVICE.submit(tcpClient);
 		    
