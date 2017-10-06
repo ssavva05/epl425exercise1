@@ -1,3 +1,5 @@
+package sdf;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.Random;
 
 public class MultiThreadedTCPServer {
@@ -67,6 +70,7 @@ public class MultiThreadedTCPServer {
 
 			// while (true) {
 			int cntr = 0;
+		   long time_start = System.nanoTime() ;
 			while (cntr < Integer.parseInt(args[1])) {
 				Socket client = listener.accept();
 
@@ -75,7 +79,13 @@ public class MultiThreadedTCPServer {
 				//
 				cntr++;
 			}
+			long time_stop = System.nanoTime() ;
 			listener.close();
+			
+			long time =  time_stop - time_start;
+			//long seconds = TimeUnit.NANOSECONDS.toSeconds(time);
+			long req = (long) (((cntr+1)*000000000.1)/time);
+			System.out.println("The server satisfies "+ req+" per second");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
