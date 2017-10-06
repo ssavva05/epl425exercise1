@@ -74,7 +74,7 @@ public class MultiThreadedTCPServer {
 
 				TCP_WORKER_SERVICE.submit(new TCPWorker(client));
 				cntr++;
-				client.close();
+				//client.close();
 			}
 			
 			long time_stop = System.nanoTime() ;
