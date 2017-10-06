@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -62,7 +60,7 @@ public class MultiThreadedTCPServer {
 
 	public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InterruptedException {
 		try {
 			ServerSocket listener = new ServerSocket(Integer.parseInt(args[0]));
 
@@ -79,6 +77,7 @@ public class MultiThreadedTCPServer {
 				//
 				cntr++;
 			}
+			TCP_WORKER_SERVICE.wait();
 			long time_stop = System.nanoTime() ;
 			listener.close();
 			
