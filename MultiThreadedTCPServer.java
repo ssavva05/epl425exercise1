@@ -73,11 +73,9 @@ public class MultiThreadedTCPServer {
 				Socket client = listener.accept();
 
 				TCP_WORKER_SERVICE.submit(new TCPWorker(client));
-
-				//
 				cntr++;
 			}
-			TCP_WORKER_SERVICE.wait();
+			
 			long time_stop = System.nanoTime() ;
 			listener.close();
 			
