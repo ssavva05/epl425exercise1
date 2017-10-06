@@ -68,12 +68,13 @@ public class MultiThreadedTCPServer {
 
 			// while (true) {
 			int cntr = 0;
-		   long time_start = System.nanoTime() ;
+		        long time_start = System.nanoTime() ;
 			while (cntr < Integer.parseInt(args[1])) {
 				Socket client = listener.accept();
 
 				TCP_WORKER_SERVICE.submit(new TCPWorker(client));
 				cntr++;
+				client.close();
 			}
 			
 			long time_stop = System.nanoTime() ;
