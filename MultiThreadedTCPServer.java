@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.Random;
 
 public class MultiThreadedTCPServer {
-
+	private static final int THREAD_POOL_SIZE = 10; 
 	private static class TCPWorker implements Runnable {
 
 		private Socket client;
@@ -57,7 +57,7 @@ public class MultiThreadedTCPServer {
 
 	}
 
-	public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(10);
+	public static ExecutorService TCP_WORKER_SERVICE = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
 	public static void main(String args[]) {
 		try {
@@ -81,4 +81,4 @@ public class MultiThreadedTCPServer {
 	}
 
 }
-s
+
