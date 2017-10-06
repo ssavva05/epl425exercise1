@@ -77,10 +77,7 @@ public class MultiThreadedTCPServer {
 			}
 			
 			long time_stop = System.nanoTime() ;
-			listener.wait(8000);
 			listener.close();
-			
-			
 			long time =  time_stop - time_start;
 			//long seconds = TimeUnit.NANOSECONDS.toSeconds(time);
 			//long req = (long) (((cntr+1)*000000000.1)/time);
