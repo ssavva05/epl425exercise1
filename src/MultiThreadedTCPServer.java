@@ -1,4 +1,3 @@
-
 /*
 Copyright 2017 abecket, ssavva05
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -119,7 +118,7 @@ public class MultiThreadedTCPServer {
 			
 			double reqd = cntr/seconds;
 			int a = (int) Math.round(reqd);
-			//double reqd = (double) (req) / 1000000000.0;
+			
 			System.out.println("The server can handle "+a+" requests per second. ");
 		} catch (IOException e) {
 			e.printStackTrace();
