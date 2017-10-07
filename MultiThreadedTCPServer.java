@@ -28,7 +28,7 @@ import java.util.Random;
  * implementation of the server that get requests and reply accordingly.
  */
 public class MultiThreadedTCPServer {
-	private static final int THREAD_POOL_SIZE = 200;
+	private static final int THREAD_POOL_SIZE = 10;
 
 	private static class TCPWorker implements Runnable {
 
